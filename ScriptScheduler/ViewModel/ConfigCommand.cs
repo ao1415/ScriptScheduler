@@ -15,6 +15,7 @@ namespace ScriptScheduler
 
         bool ICommand.CanExecute(object parameter)
         {
+            Config.Activate();
             return (Config == null || !Config.ShowFlag);
         }
 
@@ -22,6 +23,7 @@ namespace ScriptScheduler
         {
             Log.Logger.Info("コンフィグウィンドウを表示します");
             Config.Window_Show();
+            Config.Activate();
         }
     }
 }

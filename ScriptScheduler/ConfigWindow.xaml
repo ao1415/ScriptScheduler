@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:ScriptScheduler"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     Title="コンフィグ"
     Width="840"
     Height="600"
@@ -16,8 +17,8 @@
     <Grid>
         <ListView
             x:Name="ScheduleList"
-            Width="468"
-            Margin="10,10,0,10"
+            Width="815"
+            Margin="10,217,0,10"
             HorizontalAlignment="Left"
             ItemsSource="{Binding Mode=OneWay}"
             SelectedIndex="0"
@@ -39,21 +40,17 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn
-                        Width="80"
+                        Width="200"
                         DisplayMemberBinding="{Binding Name}"
                         Header="名前" />
                     <GridViewColumn
                         Width="80"
-                        DisplayMemberBinding="{Binding TimeSpan, StringFormat={}{0:dd\\.hh\\:mm\\:ss}}"
+                        DisplayMemberBinding="{Binding TimeSpan, StringFormat=\{0:hh\\:mm\\:ss\}}"
                         Header="インターバル" />
                     <GridViewColumn
-                        Width="120"
+                        Width="467"
                         DisplayMemberBinding="{Binding File}"
                         Header="ファイル" />
-                    <GridViewColumn
-                        Width="120"
-                        DisplayMemberBinding="{Binding WorkingDirectory}"
-                        Header="作業領域" />
                     <GridViewColumn
                         Width="40"
                         DisplayMemberBinding="{Binding Enable}"
@@ -61,151 +58,132 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <TabControl
-            Width="342"
-            Height="552"
-            Margin="483,10,0,0"
+        <Label
+            Margin="10,10,0,0"
             HorizontalAlignment="Left"
-            VerticalAlignment="Top">
-            <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5">
-                    <Label
-                        Margin="10,6,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Content="名前" />
-                    <TextBox
-                        x:Name="Name_TextBox"
-                        Width="120"
-                        Height="23"
-                        Margin="79,10,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        AcceptsReturn="False"
-                        Text=""
-                        TextWrapping="NoWrap" />
-                    <Label
-                        Margin="10,34,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Content="インターバル" />
-                    <TextBox
-                        x:Name="TimeSpan_TextBox"
-                        Width="120"
-                        Height="23"
-                        Margin="79,38,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        AcceptsReturn="False"
-                        Text=""
-                        TextChanged="TimeSpan_TextBox_TextChanged"
-                        TextWrapping="NoWrap" />
-                    <Label
-                        Margin="204,34,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Content="フォーマット：" />
-                    <Label
-                        x:Name="TimeSpanFormat_Lable"
-                        Margin="280,34,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Content="" />
-                    <Label
-                        Margin="10,62,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Content="ファイル" />
-                    <TextBox
-                        x:Name="FilePath_TextBox"
-                        Width="246"
-                        Height="23"
-                        Margin="79,66,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        AcceptsReturn="False"
-                        Text=""
-                        TextWrapping="NoWrap" />
-                    <Button
-                        Width="75"
-                        Margin="250,94,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Click="FileOpenButton_Click"
-                        Content="開く" />
-                    <Label
-                        Margin="10,116,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Content="作業領域" />
-                    <TextBox
-                        x:Name="WorkingDirectory_TextBox"
-                        Width="246"
-                        Height="23"
-                        Margin="79,120,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        AcceptsReturn="False"
-                        Text=""
-                        TextWrapping="NoWrap" />
-                    <Button
-                        Width="75"
-                        Margin="250,148,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Click="DirectoryOpenButton_Click"
-                        Content="開く" />
-                    <Label
-                        Margin="10,170,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Content="実行状態" />
-                    <ComboBox
-                        x:Name="Enable_ComboBox"
-                        Width="120"
-                        Margin="79,174,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        SelectedIndex="0">
-                        <ComboBoxItem
-                            Width="117.333333333333"
-                            HorizontalAlignment="Left"
-                            Content="false" />
-                        <ComboBoxItem
-                            Width="117.333333333333"
-                            HorizontalAlignment="Left"
-                            Content="true" />
-                    </ComboBox>
-                    <Button
-                        Width="75"
-                        Margin="250,227,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Click="UpdateButton_Click"
-                        Content="上書更新" />
-                    <Button
-                        Width="75"
-                        Margin="170,279,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Click="InsertButton_Click"
-                        Content="新規作成" />
-                    <Button
-                        Width="75"
-                        Margin="250,279,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Click="Delete_Click"
-                        Content="削除" />
-                    <Button
-                        Width="75"
-                        Margin="10,227,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Click="ScriptTest_Click"
-                        Content="動作テスト" />
-                </Grid>
-            </TabItem>
-        </TabControl>
+            VerticalAlignment="Top"
+            Content="名前"
+            RenderTransformOrigin="-0.225,-0.615" />
+        <TextBox
+            x:Name="Name_TextBox"
+            Width="120"
+            Height="23"
+            Margin="79,13,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            AcceptsReturn="False"
+            Text=""
+            TextWrapping="NoWrap" />
+        <Label
+            Margin="10,41,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="インターバル" />
+        <xctk:TimePicker
+            x:Name="TimeSpan_TextBox"
+            Width="60"
+            Height="23"
+            Margin="79,44,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            BorderThickness="1"
+            Format="Custom"
+            FormatString="HH:mm:ss"
+            ShowButtonSpinner="False"
+            ShowDropDownButton="False"
+            Text="0:0:0" />
+        <Label
+            Margin="10,72,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="ファイル" />
+        <TextBox
+            x:Name="FilePath_TextBox"
+            Width="480"
+            Height="23"
+            Margin="79,75,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            AcceptsReturn="False"
+            Text=""
+            TextWrapping="NoWrap" />
+        <Button
+            Width="75"
+            Margin="564,77,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="FileOpenButton_Click"
+            Content="開く" />
+        <Label
+            Margin="10,103,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="作業領域" />
+        <TextBox
+            x:Name="WorkingDirectory_TextBox"
+            Width="480"
+            Height="23"
+            Margin="79,106,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            AcceptsReturn="False"
+            Text=""
+            TextWrapping="NoWrap" />
+        <Button
+            Width="75"
+            Margin="564,108,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="DirectoryOpenButton_Click"
+            Content="開く" />
+        <Label
+            Margin="10,134,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="実行状態" />
+        <ComboBox
+            x:Name="Enable_ComboBox"
+            Width="60"
+            Margin="79,138,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            SelectedIndex="0">
+            <ComboBoxItem
+                Width="57.333333333333"
+                HorizontalAlignment="Left"
+                Content="false" />
+            <ComboBoxItem
+                Width="57.333333333333"
+                HorizontalAlignment="Left"
+                Content="true" />
+        </ComboBox>
+        <Button
+            Width="75"
+            Margin="10,191,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="UpdateButton_Click"
+            Content="上書更新" />
+        <Button
+            Width="75"
+            Margin="170,191,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="InsertButton_Click"
+            Content="新規作成" />
+        <Button
+            Width="75"
+            Margin="410,191,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="Delete_Click"
+            Content="削除" />
+        <Button
+            Width="75"
+            Margin="250,191,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Click="ScriptTest_Click"
+            Content="動作テスト" />
     </Grid>
 </Window>

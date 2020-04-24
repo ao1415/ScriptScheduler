@@ -46,6 +46,7 @@ namespace ScriptScheduler
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 FilePath_TextBox.Text = dialog.FileName;
+                WorkingDirectory_TextBox.Text = System.IO.Path.GetDirectoryName(dialog.FileName);
             }
 
         }
@@ -74,18 +75,19 @@ namespace ScriptScheduler
                 int index = ScheduleList.SelectedIndex;
                 if (index >= 0)
                 {
+                    Schedules[index].ResetTimer();
+
                     Schedules[index].Name = Name_TextBox.Text;
                     Schedules[index].TimeSpan = TimeSpan.Parse(TimeSpan_TextBox.Text);
                     Schedules[index].File = FilePath_TextBox.Text;
                     Schedules[index].WorkingDirectory = WorkingDirectory_TextBox.Text;
                     Schedules[index].Enable = (Enable_ComboBox.SelectedIndex == 1);
 
-
-                    Schedules[index].ResetTimer();
                     Schedules[index].SetTimer();
 
                     ScheduleList.Items.Refresh();
                     Serializer();
+                    Log.Logger.Info("△スケジュールを更新しました");
                 }
 
             }
@@ -109,7 +111,9 @@ namespace ScriptScheduler
 
                 Schedules.Last().SetTimer();
 
+                ScheduleList.Items.Refresh();
                 Serializer();
+                Log.Logger.Info("△スケジュールを追加しました");
             }
         }
         private void Delete_Click(object sender, RoutedEventArgs e)
@@ -122,9 +126,11 @@ namespace ScriptScheduler
                 {
                     Schedules[index].ResetTimer();
 
+                    ScheduleList.Items.Refresh();
                     Schedules.RemoveAt(index);
+                    Serializer();
+                    Log.Logger.Info("△スケジュールを削除しました");
                 }
-                Serializer();
             }
         }
 
@@ -141,7 +147,7 @@ namespace ScriptScheduler
             if (index >= 0)
             {
                 Name_TextBox.Text = Schedules[index].Name;
-                TimeSpan_TextBox.Text = Schedules[index].TimeSpan.ToString(@"dd\.hh\:mm\:ss");
+                TimeSpan_TextBox.Text = Schedules[index].TimeSpan.ToString(@"hh\:mm\:ss");
                 FilePath_TextBox.Text = Schedules[index].File;
                 WorkingDirectory_TextBox.Text = Schedules[index].WorkingDirectory;
                 Enable_ComboBox.SelectedIndex = Schedules[index].Enable ? 1 : 0;
@@ -149,18 +155,7 @@ namespace ScriptScheduler
 
         }
 
-        private void TimeSpan_TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            bool result = TimeSpan.TryParse(TimeSpan_TextBox.Text, out _);
-
-            if (result)
-                TimeSpanFormat_Lable.Content = "OK";
-            else
-                TimeSpanFormat_Lable.Content = "NG";
-
-        }
-
-        private string SaveFilepath = "./data.dat";
+        private readonly string SaveFilepath = Properties.Settings.Default.DataFilePath;
         private void Serializer()
         {
             Log.Logger.Info("▽スケジュールを保存します");
@@ -242,19 +237,26 @@ namespace ScriptScheduler
 
         public void SetTimer()
         {
-            Log.Logger.Info("タイマー：" + Name + " を起動します");
-            Timer = new Timer(TimeSpan.TotalMilliseconds);
-            Timer.Elapsed += (s, e) =>
+            if (Enable)
             {
-                PowerShellExec.Exec(File, WorkingDirectory);
-            };
-            Timer.Start();
+                Log.Logger.Info("タイマー：" + Name + " を起動します");
+                Timer = new Timer(TimeSpan.TotalMilliseconds);
+                Timer.Elapsed += (s, e) =>
+                {
+                    PowerShellExec.Exec(File, WorkingDirectory);
+                };
+                Timer.Start();
+            }
         }
         public void ResetTimer()
         {
-            Log.Logger.Info("タイマー：" + Name + " を停止します");
-            Timer.Stop();
-            Timer.Dispose();
+            if (Timer != null)
+            {
+                Log.Logger.Info("タイマー：" + Name + " を停止します");
+                Timer.Stop();
+                Timer.Dispose();
+                Timer = null;
+            }
         }
 
     }
