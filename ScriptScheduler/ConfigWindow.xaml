@@ -9,31 +9,51 @@
     Title="コンフィグ"
     Width="840"
     Height="600"
-    Background="WhiteSmoke"
+    Background="#FF252526"
     Closing="Window_Closing"
     Icon="scheduler.ico"
     ResizeMode="NoResize"
     mc:Ignorable="d">
+
     <Grid>
         <ListView
             x:Name="ScheduleList"
             Width="815"
             Margin="10,217,0,10"
             HorizontalAlignment="Left"
+            Background="#FF2D2D30"
             ItemsSource="{Binding Mode=OneWay}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Visible"
             SelectedIndex="0"
             SelectionChanged="ScheduleList_SelectionChanged">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Style.Triggers>
+                        <DataTrigger Binding="{Binding Enable}" Value="true">
+                            <Setter Property="Foreground" Value="#FFDCDCDC" />
+                            <Setter Property="BorderBrush" Value="#FF828790" />
+                            <Setter Property="Background" Value="#FF1E1E1E" />
+                            <Setter Property="SnapsToDevicePixels" Value="False" />
+                        </DataTrigger>
                         <DataTrigger Binding="{Binding Enable}" Value="false">
-                            <Setter Property="BorderBrush" Value="Gray" />
-                            <Setter Property="Background" Value="Gray" />
+                            <Setter Property="Foreground" Value="#FF828790" />
+                            <Setter Property="BorderBrush" Value="#FF828790" />
+                            <Setter Property="Background" Value="#FF1E1E1E" />
+                            <Setter Property="SnapsToDevicePixels" Value="False" />
                         </DataTrigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="BorderBrush" Value="Aqua" />
-                            <Setter Property="Background" Value="Aqua" />
+                            <Setter Property="BorderThickness" Value="2" />
+                            <Setter Property="BorderBrush" Value="#FF828790" />
+                            <Setter Property="Background" Value="#FF1E1E1E" />
+                            <Setter Property="SnapsToDevicePixels" Value="False" />
                         </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="BorderBrush" Value="#FF828790" />
+                            <Setter Property="Background" Value="#FF1E1E1E" />
+                            <Setter Property="SnapsToDevicePixels" Value="False" />
+                        </Trigger>
+
                     </Style.Triggers>
                 </Style>
             </ListView.ItemContainerStyle>
@@ -63,7 +83,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Content="名前"
-            RenderTransformOrigin="-0.225,-0.615" />
+            Foreground="#FFF1F1F1" />
         <TextBox
             x:Name="Name_TextBox"
             Width="120"
@@ -71,14 +91,19 @@
             Margin="79,13,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            VerticalContentAlignment="Center"
             AcceptsReturn="False"
-            Text=""
+            Background="#FF1E1E1E"
+            Foreground="#FFDCDCDC"
+            Text="test"
             TextWrapping="NoWrap" />
         <Label
             Margin="10,41,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Content="インターバル" />
+            Background="#FF1E1E1E"
+            Content="インターバル"
+            Foreground="#FFDCDCDC" />
         <xctk:TimePicker
             x:Name="TimeSpan_TextBox"
             Width="60"
@@ -86,7 +111,9 @@
             Margin="79,44,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            Background="#FF1E1E1E"
             BorderThickness="1"
+            Foreground="#FFDCDCDC"
             Format="Custom"
             FormatString="HH:mm:ss"
             ShowButtonSpinner="False"
@@ -96,7 +123,8 @@
             Margin="10,72,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Content="ファイル" />
+            Content="ファイル"
+            Foreground="#FFF1F1F1" />
         <TextBox
             x:Name="FilePath_TextBox"
             Width="480"
@@ -104,21 +132,28 @@
             Margin="79,75,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            VerticalContentAlignment="Center"
             AcceptsReturn="False"
+            Background="#FF1E1E1E"
+            Foreground="#FFDCDCDC"
             Text=""
             TextWrapping="NoWrap" />
         <Button
             Width="75"
-            Margin="564,77,0,0"
+            Height="23"
+            Margin="564,75,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            Background="#FF3E3E40"
             Click="FileOpenButton_Click"
-            Content="開く" />
+            Content="開く"
+            Foreground="#FFF1F1F1" />
         <Label
             Margin="10,103,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Content="作業領域" />
+            Content="作業領域"
+            Foreground="#FFF1F1F1" />
         <TextBox
             x:Name="WorkingDirectory_TextBox"
             Width="480"
@@ -126,64 +161,80 @@
             Margin="79,106,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            VerticalContentAlignment="Center"
             AcceptsReturn="False"
+            Background="#FF1E1E1E"
+            Foreground="#FFDCDCDC"
             Text=""
             TextWrapping="NoWrap" />
         <Button
             Width="75"
-            Margin="564,108,0,0"
+            Height="23"
+            Margin="564,106,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            Background="#FF3E3E40"
             Click="DirectoryOpenButton_Click"
-            Content="開く" />
+            Content="開く"
+            Foreground="#FFF1F1F1" />
         <Label
             Margin="10,134,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Content="実行状態" />
-        <ComboBox
-            x:Name="Enable_ComboBox"
-            Width="60"
-            Margin="79,138,0,0"
+            Content="実行状態"
+            Foreground="#FFF1F1F1" />
+        <RadioButton
+            x:Name="Enable_RadioButton"
+            Margin="79,141,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            SelectedIndex="0">
-            <ComboBoxItem
-                Width="57.333333333333"
-                HorizontalAlignment="Left"
-                Content="false" />
-            <ComboBoxItem
-                Width="57.333333333333"
-                HorizontalAlignment="Left"
-                Content="true" />
-        </ComboBox>
+            Content="有効"
+            Foreground="#FFF1F1F1"
+            GroupName="Enable" />
+        <RadioButton
+            x:Name="DisEnable_RadioButton"
+            Margin="127,141,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Content="無効"
+            Foreground="#FFF1F1F1"
+            GroupName="Enable"
+            IsChecked="True" />
         <Button
             Width="75"
             Margin="10,191,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            Background="#FF3E3E40"
             Click="UpdateButton_Click"
-            Content="上書更新" />
+            Content="上書更新"
+            Foreground="#FFF1F1F1" />
         <Button
             Width="75"
             Margin="170,191,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            Background="#FF3E3E40"
             Click="InsertButton_Click"
-            Content="新規作成" />
-        <Button
-            Width="75"
-            Margin="410,191,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="Delete_Click"
-            Content="削除" />
+            Content="新規作成"
+            Foreground="#FFF1F1F1" />
         <Button
             Width="75"
             Margin="250,191,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
+            Background="#FF3E3E40"
             Click="ScriptTest_Click"
-            Content="動作テスト" />
+            Content="動作テスト"
+            Foreground="#FFF1F1F1" />
+        <Button
+            Width="75"
+            Margin="410,191,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Background="#FF3E3E40"
+            Click="Delete_Click"
+            Content="削除"
+            Foreground="#FFF1F1F1" />
     </Grid>
 </Window>

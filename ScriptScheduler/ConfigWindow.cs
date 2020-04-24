@@ -81,7 +81,10 @@ namespace ScriptScheduler
                     Schedules[index].TimeSpan = TimeSpan.Parse(TimeSpan_TextBox.Text);
                     Schedules[index].File = FilePath_TextBox.Text;
                     Schedules[index].WorkingDirectory = WorkingDirectory_TextBox.Text;
-                    Schedules[index].Enable = (Enable_ComboBox.SelectedIndex == 1);
+                    if (Enable_RadioButton.IsChecked.HasValue && Enable_RadioButton.IsChecked.Value)
+                        Schedules[index].Enable = true;
+                    else if (DisEnable_RadioButton.IsChecked.HasValue && DisEnable_RadioButton.IsChecked.Value)
+                        Schedules[index].Enable = false;
 
                     Schedules[index].SetTimer();
 
@@ -100,13 +103,19 @@ namespace ScriptScheduler
             }
             else
             {
+                bool scheduleEnable = false;
+                if (Enable_RadioButton.IsChecked.HasValue && Enable_RadioButton.IsChecked.HasValue)
+                    scheduleEnable = true;
+                else if (DisEnable_RadioButton.IsChecked.HasValue && DisEnable_RadioButton.IsChecked.HasValue)
+                    scheduleEnable = false;
+
                 Schedules.Add(new Schedule
                 {
                     Name = Name_TextBox.Text,
                     TimeSpan = TimeSpan.Parse(TimeSpan_TextBox.Text),
                     File = FilePath_TextBox.Text,
                     WorkingDirectory = WorkingDirectory_TextBox.Text,
-                    Enable = (Enable_ComboBox.SelectedIndex == 1)
+                    Enable = scheduleEnable
                 });
 
                 Schedules.Last().SetTimer();
@@ -150,7 +159,16 @@ namespace ScriptScheduler
                 TimeSpan_TextBox.Text = Schedules[index].TimeSpan.ToString(@"hh\:mm\:ss");
                 FilePath_TextBox.Text = Schedules[index].File;
                 WorkingDirectory_TextBox.Text = Schedules[index].WorkingDirectory;
-                Enable_ComboBox.SelectedIndex = Schedules[index].Enable ? 1 : 0;
+                if (Schedules[index].Enable)
+                {
+                    Enable_RadioButton.IsChecked = true;
+                    DisEnable_RadioButton.IsChecked = false;
+                }
+                else
+                {
+                    Enable_RadioButton.IsChecked = false;
+                    DisEnable_RadioButton.IsChecked = true;
+                }
             }
 
         }
